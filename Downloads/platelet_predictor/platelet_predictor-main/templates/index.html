@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Platelet Prediction</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2> PLATELETS Count Prediction</h2>
+        <form method="POST">
+            <label>Age:</label>
+            <input type="number" name="age" required>
+
+            <label>Fever Date:</label>
+            <input type="date" name="fever_date" required>
+
+            <label>Type of Fever:</label>
+            <input type="text" name="type_of_fever" required>
+
+            <label>Headache:</label>
+            <div class="checkbox-group">
+                <input type="checkbox" name="headache" value="1"> <span>Yes</span>
+            </div>
+
+            <label>Joint Pain:</label>
+            <div class="checkbox-group">
+                <input type="checkbox" name="joint_pain" value="1"> <span>Yes</span>
+            </div>
+
+            <label>Nausea:</label>
+            <div class="checkbox-group">
+                <input type="checkbox" name="nausea" value="1"> <span>Yes</span>
+            </div>
+
+            <label>Rash:</label>
+            <div class="checkbox-group">
+                <input type="checkbox" name="rash" value="1"> <span>Yes</span>
+            </div>
+
+            <label>Hydration Level:</label>
+            <input type="text" name="hydration_level" required>
+
+            <label>Existing Conditions (0/1):</label>
+            <input type="number" name="existing_conditions" required>
+
+            <label>Weight (kg):</label>
+            <input type="number" name="weight" step="0.1" required>
+
+            <label>Location:</label>
+            <input type="text" name="location" required>
+
+            <label>Platelet Count Day 1:</label>
+            <input type="number" name="platelet_day1" required>
+
+            <label>Platelet Count Day 2:</label>
+            <input type="number" name="platelet_day2" required>
+
+            <label>Can Eat Raw Food?</label>
+            <select name="raw_food">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <input type="submit" value="Predict">
+        </form>
+
+        {% if prediction %}
+            <div class="result">
+                <h3>🩸 Predicted Platelet Count: {{ prediction }}</h3>
+            </div>
+            {% if recommendation %}
+                {% set parts = recommendation.split('Suggested foods: ') %}
+                {% set status = parts[0] %}
+                {% set food_part = parts[1].split('Suggested fluids: ')[0] %}
+                {% set fluid_part = parts[1].split('Suggested fluids: ')[1] %}
+                <div class="recommendation">
+                    <p class="status">🩸 {{ status }}</p>
+                    <p class="food">🥗 Suggested foods: {{ food_part }}</p>
+                    <p class="fluid">💧 Suggested fluids: {{ fluid_part }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        {% if error %}
+            <div class="error">
+                <p><strong>Error:</strong> {{ error }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
